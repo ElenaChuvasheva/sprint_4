@@ -1,6 +1,6 @@
 import pytest
 
-from conftest import (
+from data import (
     CARTOON_BOOK_NAME,
     COMEDY_BOOK_NAME,
     CRIME_STORY_BOOK_NAME,
@@ -55,7 +55,8 @@ class TestBooksCollector:
         assert book_genre == GENRE_CRIME_STORY
 
     @pytest.mark.parametrize(
-        "crime_story_name", [CRIME_STORY_BOOK_NAME, ONE_MORE_CRIME_STORY_BOOK_NAME]
+        "crime_story_name",
+        [CRIME_STORY_BOOK_NAME, ONE_MORE_CRIME_STORY_BOOK_NAME],
     )
     def test_get_books_with_specific_genre(
         self, books_collector_two_crime_story_books, crime_story_name
@@ -80,23 +81,13 @@ class TestBooksCollector:
         assert (name in books_for_children) == is_in_list
 
     def test_add_existing_book_to_favorites(self, books_collector_many):
-        number_of_favorite_books_old = len(books_collector_many.get_list_of_favorites_books())
         books_collector_many.add_book_in_favorites(CRIME_STORY_BOOK_NAME)
-        number_of_favorite_books_new = len(books_collector_many.get_list_of_favorites_books())
 
-        assert number_of_favorite_books_new - number_of_favorite_books_old == 1
         assert books_collector_many.get_list_of_favorites_books() == [CRIME_STORY_BOOK_NAME]
 
     def test_delete_existing_book_from_favorites(self, books_collector_many_with_favorite):
-        number_of_favorite_books_old = len(
-            books_collector_many_with_favorite.get_list_of_favorites_books()
-        )
         books_collector_many_with_favorite.delete_book_from_favorites(CRIME_STORY_BOOK_NAME)
-        number_of_favorite_books_new = len(
-            books_collector_many_with_favorite.get_list_of_favorites_books()
-        )
 
-        assert number_of_favorite_books_old - number_of_favorite_books_new == 1
         assert books_collector_many_with_favorite.get_list_of_favorites_books() == []
 
     def test_get_list_of_favorites_books(self, books_collector_many_with_favorite):
