@@ -1,20 +1,34 @@
 import pytest
 
-from data import (BOOK_NAMES, CRIME_STORY_BOOK_NAME, GENRE_CRIME_STORY, GENRES,
-                  NEW_BOOK_NAME, ONE_MORE_CRIME_STORY_BOOK_NAME)
+import data
 from main import BooksCollector
 
 
 @pytest.fixture
 def books_collector_one_book_added():
     collector = BooksCollector()
-    collector.add_new_book(NEW_BOOK_NAME)
+    collector.add_new_book(data.NEW_BOOK_NAME)
     return collector
 
 
 @pytest.fixture
 def dict_from_names_and_genres():
-    return dict(zip(BOOK_NAMES, GENRES))
+    book_names = [
+        data.PHANTASY_BOOK_NAME,
+        data.HORROR_BOOK_NAME,
+        data.CRIME_STORY_BOOK_NAME,
+        data.CARTOON_BOOK_NAME,
+        data.COMEDY_BOOK_NAME,
+    ]
+    genres = [
+        data.GENRE_PHANTASY,
+        data.GENRE_HORROR,
+        data.GENRE_CRIME_STORY,
+        data.GENRE_CARTOON,
+        data.GENRE_COMEDY,
+    ]
+
+    return dict(zip(book_names, genres))
 
 
 @pytest.fixture
@@ -27,7 +41,7 @@ def books_collector_many(dict_from_names_and_genres):
 @pytest.fixture
 def books_collector_two_crime_story_books(books_collector_many):
     collector = books_collector_many
-    collector.books_genre[ONE_MORE_CRIME_STORY_BOOK_NAME] = GENRE_CRIME_STORY
+    collector.books_genre[data.ONE_MORE_CRIME_STORY_BOOK_NAME] = data.GENRE_CRIME_STORY
     return collector
 
 
@@ -39,5 +53,5 @@ def books_collector_empty():
 @pytest.fixture
 def books_collector_many_with_favorite(books_collector_many):
     collector = books_collector_many
-    books_collector_many.favorites.append(CRIME_STORY_BOOK_NAME)
+    books_collector_many.favorites.append(data.CRIME_STORY_BOOK_NAME)
     return collector
