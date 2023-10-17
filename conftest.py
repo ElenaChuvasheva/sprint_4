@@ -19,8 +19,6 @@ BOOK_NAMES = [
     COMEDY_BOOK_NAME,
 ]
 
-BOOKS_FOR_CHILDREN = [PHANTASY_BOOK_NAME, CARTOON_BOOK_NAME, COMEDY_BOOK_NAME]
-
 GENRE_PHANTASY = "Фантастика"
 GENRE_HORROR = "Ужасы"
 GENRE_CRIME_STORY = "Детективы"
@@ -43,15 +41,15 @@ def dict_from_names_and_genres():
 
 
 @pytest.fixture
-def books_collector_many_books(dict_from_names_and_genres):
+def books_collector_many(dict_from_names_and_genres):
     collector = BooksCollector()
     collector.books_genre = dict_from_names_and_genres
     return collector
 
 
 @pytest.fixture
-def books_collector_two_crime_story_books(books_collector_many_books):
-    collector = books_collector_many_books
+def books_collector_two_crime_story_books(books_collector_many):
+    collector = books_collector_many
     collector.books_genre[ONE_MORE_CRIME_STORY_BOOK_NAME] = GENRE_CRIME_STORY
     return collector
 
@@ -59,3 +57,10 @@ def books_collector_two_crime_story_books(books_collector_many_books):
 @pytest.fixture
 def books_collector_empty():
     return BooksCollector()
+
+
+@pytest.fixture
+def books_collector_many_with_favorite(books_collector_many):
+    collector = books_collector_many
+    books_collector_many.favorites.append(CRIME_STORY_BOOK_NAME)
+    return collector
