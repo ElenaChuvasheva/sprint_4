@@ -44,11 +44,11 @@ class TestBooksCollector:
     # чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
 
     def test_add_new_book_no_genre(self, books_collector_one_book_added):
-        assert books_collector_one_book_added.books_genre[NEW_BOOK_NAME] == ""
+        assert books_collector_one_book_added.get_book_genre(NEW_BOOK_NAME) == ""
 
     def test_set_book_genre(self, books_collector_one_book_added):
         books_collector_one_book_added.set_book_genre(NEW_BOOK_NAME, GENRE_CRIME_STORY)
-        assert books_collector_one_book_added.books_genre[NEW_BOOK_NAME] == GENRE_CRIME_STORY
+        assert books_collector_one_book_added.get_book_genre(NEW_BOOK_NAME) == GENRE_CRIME_STORY
 
     def test_get_book_genre(self, books_collector_many):
         book_genre = books_collector_many.get_book_genre(CRIME_STORY_BOOK_NAME)
@@ -80,18 +80,24 @@ class TestBooksCollector:
         assert (name in books_for_children) == is_in_list
 
     def test_add_existing_book_to_favorites(self, books_collector_many):
-        number_of_favorite_books_old = len(books_collector_many.favorites)
+        number_of_favorite_books_old = len(books_collector_many.get_list_of_favorites_books())
         books_collector_many.add_book_in_favorites(CRIME_STORY_BOOK_NAME)
-        number_of_favorite_books_new = len(books_collector_many.favorites)
+        number_of_favorite_books_new = len(books_collector_many.get_list_of_favorites_books())
+
         assert number_of_favorite_books_new - number_of_favorite_books_old == 1
-        assert books_collector_many.favorites == [CRIME_STORY_BOOK_NAME]
+        assert books_collector_many.get_list_of_favorites_books() == [CRIME_STORY_BOOK_NAME]
 
     def test_delete_existing_book_from_favorites(self, books_collector_many_with_favorite):
-        number_of_favorite_books_old = len(books_collector_many_with_favorite.favorites)
+        number_of_favorite_books_old = len(
+            books_collector_many_with_favorite.get_list_of_favorites_books()
+        )
         books_collector_many_with_favorite.delete_book_from_favorites(CRIME_STORY_BOOK_NAME)
-        number_of_favorite_books_new = len(books_collector_many_with_favorite.favorites)
+        number_of_favorite_books_new = len(
+            books_collector_many_with_favorite.get_list_of_favorites_books()
+        )
+
         assert number_of_favorite_books_old - number_of_favorite_books_new == 1
-        assert books_collector_many_with_favorite.favorites == []
+        assert books_collector_many_with_favorite.get_list_of_favorites_books() == []
 
     def test_get_list_of_favorites_books(self, books_collector_many_with_favorite):
         assert books_collector_many_with_favorite.get_list_of_favorites_books() == [
