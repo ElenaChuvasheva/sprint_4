@@ -1,3 +1,5 @@
+import copy
+
 import pytest
 
 import data
@@ -34,24 +36,22 @@ def dict_from_names_and_genres():
 @pytest.fixture
 def books_collector_many(dict_from_names_and_genres):
     collector = BooksCollector()
-    collector.books_genre = dict_from_names_and_genres
+    for name, genre in dict_from_names_and_genres.items():
+        collector.add_new_book(name)
+        collector.set_book_genre(name, genre)
     return collector
 
 
 @pytest.fixture
 def books_collector_two_crime_story_books(books_collector_many):
-    collector = books_collector_many
-    collector.books_genre[data.ONE_MORE_CRIME_STORY_BOOK_NAME] = data.GENRE_CRIME_STORY
+    collector = copy.deepcopy(books_collector_many)
+    collector.add_new_book(data.ONE_MORE_CRIME_STORY_BOOK_NAME)
+    collector.set_book_genre(data.ONE_MORE_CRIME_STORY_BOOK_NAME, data.GENRE_CRIME_STORY)
     return collector
 
 
 @pytest.fixture
-def books_collector_empty():
-    return BooksCollector()
-
-
-@pytest.fixture
 def books_collector_many_with_favorite(books_collector_many):
-    collector = books_collector_many
-    books_collector_many.favorites.append(data.CRIME_STORY_BOOK_NAME)
+    collector = copy.deepcopy(books_collector_many)
+    collector.add_book_in_favorites(data.CRIME_STORY_BOOK_NAME)
     return collector
